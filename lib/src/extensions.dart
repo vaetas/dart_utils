@@ -19,11 +19,17 @@ extension StringTakeExtension on String {
   }
 }
 
-extension ListSortExtension<T> on Iterable<T> {
+extension IterableExtension<E> on Iterable<E> {
   /// Creates new Itarable sorted by DateTime from newest to oldest.
   ///
   /// Most recent DateTime (closes to now) is at index 0.
-  List<T> sortedByDate(DateTime Function(T item) mapper) {
+  List<E> sortedByDate(DateTime Function(E e) mapper) {
     return List.from(this)..sort((a, b) => mapper(b).compareTo(mapper(a)));
+  }
+
+  // Allows mapping list with async [mapper]. All mapped elements are run at the
+  // same time and returned `Future` ends when last element is finished.
+  Future<List<T>> asyncMap<T>(Future<T> Function(E e) mapper) async {
+    return Future.wait<T>(map((i) async => mapper(i)));
   }
 }
