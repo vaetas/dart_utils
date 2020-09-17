@@ -1,7 +1,7 @@
-extension FutureListExtension<T> on List<Future<T>> {
+extension FutureListExtension<T> on Iterable<Future<T>> {
   /// Wrap `List<Future>` inside `Future.wait(...)` to run all async operations at
   /// the same time.
-  Future<List<T>> wait() async => Future.wait(this);
+  Future<List<T>> wait() => Future.wait(this);
 }
 
 extension MapToListExtension<K, V> on Map<K, V> {
@@ -19,9 +19,11 @@ extension StringTakeExtension on String {
   }
 }
 
-extension ListSortExtension<T> on List<T> {
-  /// Returns new List sorted by DateTime from newest to oldest item.
-  List<T> sortByDate(DateTime Function(T item) mapper) {
-    return this..sort((a, b) => mapper(b).compareTo(mapper(a)));
+extension ListSortExtension<T> on Iterable<T> {
+  /// Creates new Itarable sorted by DateTime from newest to oldest.
+  ///
+  /// Most recent DateTime (closes to now) is at index 0.
+  List<T> sortedByDate(DateTime Function(T item) mapper) {
+    return List.from(this)..sort((a, b) => mapper(b).compareTo(mapper(a)));
   }
 }
