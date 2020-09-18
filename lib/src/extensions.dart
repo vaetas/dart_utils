@@ -1,11 +1,11 @@
 extension FutureListExtension<T> on Iterable<Future<T>> {
-  /// Wrap `List<Future>` inside `Future.wait(...)` to run all async operations at
-  /// the same time.
+  /// Wrap `List<Future>` inside `Future.wait(...)` to run all async operations
+  /// at the same time.
   Future<List<T>> wait() => Future.wait(this);
 }
 
 extension MapToListExtension<K, V> on Map<K, V> {
-  /// Maps `Map` into `List` using [mapper].
+  /// Maps `Map<K, V>` into `List<T>` using [mapper] function.
   List<T> mapList<T>(T Function(K key, V value) mapper) {
     return entries.map((e) => mapper(e.key, e.value)).toList();
   }
@@ -13,7 +13,7 @@ extension MapToListExtension<K, V> on Map<K, V> {
 
 extension StringTakeExtension on String {
   /// Returns new String trimmed to [n] characters. When String length is less
-  /// than [n], it is returned as is.
+  /// than [n], String is returned unchaged.
   String take(int n) {
     return (length > n) ? substring(0, n) : this;
   }
@@ -22,7 +22,7 @@ extension StringTakeExtension on String {
 extension IterableExtension<E> on Iterable<E> {
   /// Creates new Itarable sorted by DateTime from newest to oldest.
   ///
-  /// Most recent DateTime (closes to now) is at index 0.
+  /// Most recent DateTime is at index 0.
   List<E> sortedByDate(DateTime Function(E e) mapper) {
     return List.from(this)..sort((a, b) => mapper(b).compareTo(mapper(a)));
   }
